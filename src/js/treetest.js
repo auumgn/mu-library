@@ -22,7 +22,7 @@ $(document).ready(function () {
     const {StyleRoot} = require('radium');    
     const filters = require('react-treebeard/example/filter.js'); 
  //   const styles = require('./node_modules/react-treebeard/example/styles.js');
-    var data = {'name': 'xxxx', toggled: true,'children': []};
+    var data = {}   ;
     var extra = [];
     var history = [];
     const content = document.getElementById('tree');
@@ -80,9 +80,7 @@ $(document).ready(function () {
             extra[i].FolderCreationDate = newDate;
             extra[i].AlbumPlaycount = (extra[i].Playcount / extra[i].Tracklist.length).toFixed(2);
             extra[i].Numtracks = extra[i].Tracklist.length;
-        }
-        
-        ReactDOM.render(<TreeExample extra={extra}/>, content);          
+        }         
         return extra;
     });
     };
@@ -165,8 +163,8 @@ $(document).ready(function () {
 
         });
     };
-
     generateData(Dates);
+
     var getCategoryHistory = function() { 
         fetch(link + "/categoryHistory", {headers: {
             "Content-Type": "application/json",
@@ -252,7 +250,9 @@ $(document).ready(function () {
                     }                                       
                 }*/
                 history.sort(sort_by('name', false));
-                ReactDOM.render(<TreeExample history={history}/>, content);
+                ReactDOM.render(<TreeExample extra={extra} />, content);
+
+               // return history;
             //    generateData(Dates);
             },
             (error) => {
@@ -675,7 +675,8 @@ $(document).ready(function () {
     class NodeViewer extends React.Component {
         constructor(props) {
             super(props);
-            this.state = {checkAll:false, obj:this.props.node, extraData : history, check:false, mainData:data, checked:false, enableCharts: false, enableAlbumCharts: false, categories:[
+            this.state = {checkAll:false, obj:this.props.node, extraData : history, check:false, mainData:data, checked:false, enableCharts: false, defaultCheckAll: true,
+                 enableAlbumCharts: false, categories:[
                 {id:1, value:"Alt", isChecked:false, color:"#ff1800"},
                 {id:2, value:"Folk", isChecked:false, color:"#09be00"},
                 {id:3, value:"City Pop", isChecked:false, color:"#608eff"},
@@ -733,7 +734,7 @@ $(document).ready(function () {
         handleAllChecked = (event) => {
             let categories = this.state.categories;
             categories.forEach(category => category.isChecked = event.target.checked);
-            this.setState({categories: categories});
+            this.setState({categories: categories, defaultCheckAll: event.target.checked});
         }
 
         msToMinSec(millis) {
@@ -1545,7 +1546,8 @@ $(document).ready(function () {
             
                 chartWidth += 50;
                 var allCategories = [];
-                if (this.props.history) {
+                
+                if (this.props.history && this.props.history.length > 0) {
                     for (var i = 0; i<this.props.history.length; i++){
                         Object.keys(this.props.history[i]).forEach(e => {
                             var o = {};
@@ -1578,18 +1580,20 @@ $(document).ready(function () {
                         tickedBoxes.push(this.state.categories[i]);
                     }
                 }
+                
                 var lines = tickedBoxes.map((box) => <Line type="monotone" dataKey={box.value} stroke={box.color} isAnimationActive={false}/>);
                 var barChartHeight = 40 * tickedBars.length;
                 if (barChartHeight < 100) barChartHeight = 100; 
+                let lineData = this.props.history;
                 
-                     
+                
                 return (
                     <StyleRoot>
                         <div id='listeningHistory'>
                             <div style={style.main.mainHeader}>Listening History & Data</div>
                             <div style={style.main.tickBoxes}>
                                 <div style={style.main.tickBoxMaster}>
-                                <input defaultChecked={true} style={style.main.tickBox} readOnly type="checkbox" onClick={this.handleAllChecked} value="checkedall" />
+                                <input defaultChecked={this.state.defaultCheckAll} style={style.main.tickBox} readOnly type="checkbox" onClick={this.handleAllChecked} value="checkedall" />
                                 <span style={style.main.tickBoxLabel}>Check / Uncheck All</span>
                                 </div>                     
                                 <div>{boxes}</div>
@@ -1599,7 +1603,7 @@ $(document).ready(function () {
                                 <p  style={style.main.chartSpinnerText}>Generating chart data</p>
                             </div>   
                             <div id='mainPageCharts'>                         
-                                <LineChart width={chartWidth} height={600} data={this.props.history} >
+                                <LineChart width={chartWidth} height={600} data={lineData} >
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="name" />
                                     <YAxis />
@@ -1741,12 +1745,12 @@ $(document).ready(function () {
         }
 
         initialize = () => {
-          /*  var a = document.getElementById('content');
+            var a = document.getElementById('content');
             var b = document.getElementById('toggleRangePeriod');
             a.style.opacity = 1;
             b.style.opacity = 1;
             spinnerDiv.style.opacity = 0;
-            setTimeout(function(){ spinnerDiv.style.display = "none"; }, 300);*/
+            setTimeout(function(){ spinnerDiv.style.display = "none"; }, 300);
         }
 
         onToggle2(node) {
@@ -2018,28 +2022,25 @@ $(document).ready(function () {
             }
             this.setState({cursor:null, mobile:"mid", tablet:true});
         }
-
         componentDidUpdate(previousProps, previousState) {
             if (previousProps.data !== this.props.data) {
                 this.setState({
                     data: data, extra:extra});
             } 
             window.addEventListener("resize", this.updatedDim);
-            if (this.state.data) {
-                var a = document.getElementById('content');
-                var b = document.getElementById('toggleRangePeriod');
-                a.style.opacity = 1;
-                b.style.opacity = 1;
-                spinnerDiv.style.opacity = 0;
-                setTimeout(function(){ spinnerDiv.style.display = "none"; }, 300);
-            }}
+            
+            }
 
         componentWillUnmount() {
             window.removeEventListener("resize", this.updatedDim);
             }
 
+        componentDidMount() {
+            setTimeout(() => {this.initialize()}, 50);
+        }
 
-        render(){          
+        render(){     
+            console.log(this.props.data);     
             var {data: Statedata, cursor, extra:Extradata} = this.state;
             const buttonRow = document.getElementById('leftButtonRow');
             var rangeStartText = document.getElementById('event-start');
@@ -2113,7 +2114,7 @@ $(document).ready(function () {
                             <Col id="midscreenInit" xs="12" sm="6" md="6" lg="6">
                                 <div id="midscreen" style={styles.component}>
                                     <div style={styles.nodeViewer}>
-                                        <NodeViewer node={cursor} ready={this.initialize} toggle={this.onToggle2.bind(this)} data={data} width={this.state.width} history={this.props.history}/>
+                                        <NodeViewer node={cursor} ready={this.initialize} toggle={this.onToggle2.bind(this)} data={this.props.data} width={this.state.width} history={history}/>
                                     </div>
                                 </div>                                
                             </Col>
