@@ -84,12 +84,12 @@ $(document).ready(function () {
       // Create two timestamps to define a range.
         connect: true,
         range: {
-            min: timestamp('2009'),
-            max: timestamp('')
+            min: timestamp('2019-03-01'),
+            max: timestamp('2019-05-30')
         }, 
     
       // Steps of one week
-        step: 1 * 7 * 24 * 60 * 60 * 1000,
+        step: 1 * 24 * 60 * 60 * 1000,
     
       // Two more timestamps indicate the handle starting positions.
         start: [threeMonthsAgo, timestamp('')],

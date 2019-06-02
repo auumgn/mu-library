@@ -854,6 +854,7 @@ $(document).ready(function () {
                 this.setState({enableAlbumCharts:true});
             }
         }
+
         componentDidUpdate (previousProps, previousState) {            
             // ??????????????
             if (previousProps.node !== this.props.node) {
@@ -970,7 +971,7 @@ $(document).ready(function () {
                     {
                         albumPageTracklist.style.marginTop = "15px";
                     }
-                    
+                       
                     
                     if (this.state.check) {
                         var artist = this.state.mainData.children.find(x => x.name === this.state.obj.artist);
@@ -1002,9 +1003,19 @@ $(document).ready(function () {
 
                     break;
                     case "track":
-                    break;
-                }                
-            }    
+                    break;                    
+                }              
+            } else {
+                if (this.props.history && this.props.history.length > 0) {
+                    let charts = document.getElementById('mainPageCharts');
+                    let chartSpinner = document.getElementById('chartSpinner');
+                    if (chartSpinner) {
+                        chartSpinner.style.opacity = 0;
+                        charts.style.position = "static";
+                        charts.style.opacity = 1;
+                    }                    
+                }
+            }  
           }
 // ********************************************************* RENDER *********************************************************
 // ********************************************************* RENDER *********************************************************
@@ -1569,15 +1580,7 @@ $(document).ready(function () {
                 var lines = tickedBoxes.map((box) => <Line type="monotone" dataKey={box.value} stroke={box.color} isAnimationActive={false}/>);
                 var barChartHeight = 40 * tickedBars.length;
                 if (barChartHeight < 100) barChartHeight = 100; 
-                if (tickedBars.length > 0) {
-                    let charts = document.getElementById('mainPageCharts');
-                    let chartSpinner = document.getElementById('chartSpinner');
-                    if (chartSpinner) {
-                        chartSpinner.style.opacity = 0;
-                        charts.style.position = "static";
-                         charts.style.opacity = 1;
-                    }                    
-                }
+                
                      
                 return (
                     <StyleRoot>
