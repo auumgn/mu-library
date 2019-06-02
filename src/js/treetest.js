@@ -2039,8 +2039,7 @@ $(document).ready(function () {
             setTimeout(() => {this.initialize()}, 50);
         }
 
-        render(){     
-            console.log(this.props.data);     
+        render(){        
             var {data: Statedata, cursor, extra:Extradata} = this.state;
             const buttonRow = document.getElementById('leftButtonRow');
             var rangeStartText = document.getElementById('event-start');
