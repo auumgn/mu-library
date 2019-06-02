@@ -7,7 +7,6 @@ import {
     } from 'recharts';
     import { throttle, debounce } from 'throttle-debounce';
 import { get } from 'http';
-console.log("yea");
 $(document).ready(function () { 
     'use strict';
     var link = "https://mu.serveo.net";
@@ -101,8 +100,7 @@ $(document).ready(function () {
             data: {Dates : daterange},
             success: function(result) { }
         });
-        request.done(function(dataRcvd) {     
-            console.log(dataRcvd);      
+        request.done(function(dataRcvd) {           
             data = {'name':'x', toggled: true, 'children': []};
             for (var i = 0; i<dataRcvd.length; i++) {
                 var trackDuration = new Date(Number(dataRcvd[i].Duration));
@@ -177,7 +175,6 @@ $(document).ready(function () {
             .then(res => res.json())
             .then(
             (result) => {
-                console.log("gotcha");
                 let rangeStart = Dates.start;
                 let rangeEnd = Dates.end;
                 let min = Infinity, max = -Infinity
@@ -849,12 +846,10 @@ $(document).ready(function () {
         generateAlbumChart = () => {
             let tracksHeader = document.getElementById('albumPageTracklist');
             if (this.state.enableAlbumCharts) {
-                console.log("enables");
               //  tracksHeader.style.marginTop = "20px";           
                 this.setState({enableAlbumCharts:false});
             }
             else {
-                console.log("dkisabele");
              //   tracksHeader.style.marginTop = 0;
                 this.setState({enableAlbumCharts:true});
             }
@@ -1672,7 +1667,6 @@ $(document).ready(function () {
                 .then(res => res.json())
                 .then(
                 (result) => {
-                    console.log(result);
                     if (result.data.length > 0) {
                         var artist = this.state.data.children.find(x => x.name === data.name);
                         if (artist) {
