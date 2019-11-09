@@ -77,7 +77,7 @@ $(document).ready(function () {
             date.getFullYear();
     }
     var dateSlider = document.getElementById('fullname'); 
-    var threeMonthsAgo = new Date();
+    var threeMonthsAgo = new Date('2019-03-01');
     threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
     threeMonthsAgo = threeMonthsAgo.getTime();
       noUiSlider.create(dateSlider, {

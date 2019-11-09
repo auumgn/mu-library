@@ -8,10 +8,17 @@ const fs = require("fs");
 const https = require("https");
 const {Client} = require('pg');
 const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl:true,
+    
+    user: 'postgres',
+    host: 'localhost',
+    database: 'mulibrarydemo',
+    password: '548f4c2a',
+    port: 5432,
+    statement_timeout: 5000
   });
-
+/*    connectionString: process.env.DATABASE_URL,
+    ssl:true
+    */
 client.connect()
 //const { Pool } = require('pg');
 

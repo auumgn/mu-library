@@ -9,9 +9,9 @@ import {
 import { get } from 'http';
 $(document).ready(function () { 
     'use strict';
-    var link = "";
-    var link3 = "https://mu.serveo.net";
-    var link2 = "http://localhost:5000";
+    var link3 = "";
+    var link2 = "https://mu.serveo.net";
+    var link = "http://localhost:5000";
     const React = require('react');
     const ReactDOM = require('react-dom');
     const PropTypes = require('prop-types');
@@ -30,9 +30,8 @@ $(document).ready(function () {
     const HELP_MSG = 'Select A Node To See Its Data Structure Here...';
 
     var Dates = new Object(), start = new Date, end = new Date;
-    Dates.start = new Date();
-    Dates.end = new Date();
-    Dates.start.setMonth(Dates.start.getMonth() - 3);
+    Dates.start = new Date('2019-03-01');
+    Dates.end = new Date('2019-05-30');
     var months = [
         "Jan", "Feb", "Mar",
         "Apr", "May", "June", "July",
@@ -99,7 +98,7 @@ $(document).ready(function () {
             data: {Dates : daterange},
             success: function(result) { }
         });
-        request.done(function(dataRcvd) {           
+        request.done(function(dataRcvd) {         
             data = {'name':'x', toggled: true, 'children': []};
             for (var i = 0; i<dataRcvd.length; i++) {
                 var trackDuration = new Date(Number(dataRcvd[i].Duration));
@@ -250,7 +249,7 @@ $(document).ready(function () {
                     }                                       
                 }*/
                 history.sort(sort_by('name', false));
-                ReactDOM.render(<TreeExample extra={extra} />, content);
+                ReactDOM.render(<TreeExample extra={extra} history={history}/>, content);
 
                // return history;
             //    generateData(Dates);
@@ -675,6 +674,8 @@ $(document).ready(function () {
     class NodeViewer extends React.Component {
         constructor(props) {
             super(props);
+            console.log("aa");
+            console.log(data);
             this.state = {checkAll:false, obj:this.props.node, extraData : history, check:false, mainData:data, checked:false, enableCharts: false, defaultCheckAll: true,
                  enableAlbumCharts: false, categories:[
                 {id:1, value:"Alt", isChecked:false, color:"#ff1800"},
@@ -869,7 +870,6 @@ $(document).ready(function () {
                 categories.forEach(category => category.isChecked = true);
                 this.setState({categories: categories, checkAll: true});
             }
-            
             if (this.state.obj) {
                 var listTitle = document.getElementsByClassName('list-item-title');
                 var listCountBox = document.getElementsByClassName("list-item-countBox");
@@ -976,6 +976,8 @@ $(document).ready(function () {
                        
                     
                     if (this.state.check) {
+                        console.log(this.state);
+                        
                         var artist = this.state.mainData.children.find(x => x.name === this.state.obj.artist);
                         if (artist) {
                             var album = artist.children.find(x => x.name === this.state.obj.name);
@@ -985,6 +987,7 @@ $(document).ready(function () {
                         else {var albumSongs = this.state.obj.tracks;this.toggleCheck();}
                     }
                     else {
+                        console.log(this.state);
                         var albumSongs = this.state.obj.tracks;
                     }
                     var countBoxes = document.getElementsByClassName(this.state.obj.name + 'playcount'); 
@@ -1008,6 +1011,7 @@ $(document).ready(function () {
                     break;                    
                 }              
             } else {
+                
                 if (this.props.history && this.props.history.length > 0) {
                     let charts = document.getElementById('mainPageCharts');
                     let chartSpinner = document.getElementById('chartSpinner');
@@ -1482,7 +1486,9 @@ $(document).ready(function () {
                     
                     
                     var albumArtist = album.artist;
-                    var albumArtistObj = this.props.data.children.find(x => x.name == albumArtist);
+                    if (this.props.data) {
+                        var albumArtistObj = this.props.data.children.find(x => x.name == albumArtist);
+                    }
                     return (
                         
                             <div style={style.base}>
@@ -2075,7 +2081,6 @@ $(document).ready(function () {
                     }
                 }
             }
-            
             
             return (         
                 <StyleRoot id='content'>
