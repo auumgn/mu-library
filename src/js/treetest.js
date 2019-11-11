@@ -9,8 +9,8 @@ import {
 import { get } from 'http';
 $(document).ready(function () { 
     'use strict';
-    var link3 = "";
-    var link = "mu-library.herokuapp.com";
+    var link = "";
+    var link3 = "mu-library.herokuapp.com";
     var link2 = "http://localhost:5000";
     const React = require('react');
     const ReactDOM = require('react-dom');
