@@ -249,7 +249,7 @@ $(document).ready(function () {
                     }                                       
                 }*/
                 history.sort(sort_by('name', false));
-                ReactDOM.render(<TreeExample extra={extra} history={history}/>, content);
+                ReactDOM.render(<TreeExample extra={extra}/>, content);
 
                // return history;
             //    generateData(Dates);
