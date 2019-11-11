@@ -10,8 +10,8 @@ import { get } from 'http';
 $(document).ready(function () { 
     'use strict';
     var link3 = "";
-    var link2 = "https://mu.serveo.net";
-    var link = "http://localhost:5000";
+    var link = "https://mu.serveo.net";
+    var link2 = "http://localhost:5000";
     const React = require('react');
     const ReactDOM = require('react-dom');
     const PropTypes = require('prop-types');
