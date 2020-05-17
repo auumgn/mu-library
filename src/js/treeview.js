@@ -411,7 +411,7 @@ class TreeView extends React.Component {
       const buttonRow = document.getElementById('leftButtonRow');
       var rangeStartText = document.getElementById('event-start');
       var rangeEndText = document.getElementById('event-end');            
-
+        console.log("THIS IS THE TEST INDEED");
       if (buttonRow) {
           if (this.state.width > 767) {
               rangeStartText.innerHTML = main.dateFormat(main.dates.start);
