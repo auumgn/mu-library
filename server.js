@@ -10,6 +10,7 @@ const {Client} = require('pg');
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl:true
+    
   });
     
     
@@ -22,8 +23,8 @@ client.connect()
   .then(pool => {
     console.log('Connected to MSSQL')
     return pool
-  })
-  .catch(err => console.log('Database Connection Failed! Bad Config: ', err))*/
+  })*/
+  .catch(err => console.log('Database Connection Failed! Bad Config: ', err))
   let port = process.env.PORT;
   if (port == null || port == "") {
     port = 5000;

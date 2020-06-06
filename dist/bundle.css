@@ -109,7 +109,7 @@ text-align: right;
 }
 #leftSideList {
   position:absolute;
-  max-width: 450px !important; 
+  max-width: 445px !important; 
   width: 100% !important;
   padding:0 !important; 
   max-height:100vh; 
